@@ -2,18 +2,14 @@ html {
 	background-color: #333;
 }
 
-.fal {
-	font-size: 30px;
-}
-
 #main {
 	position: absolute;
 	height: 100%;
 	width: 30%;
-	border-radius: 0 30px 30px 0;
+
 }
 .day {
-	background: linear-gradient(to bottom left, #ccb90f, #000000);
+	background: linear-gradient(to bottom left, #c7700c, #353434);
 	color: #fff;
 }
 .night {
@@ -36,21 +32,10 @@ html {
 	text-shadow: 2px 2px 2px #707070;
 }
 
-.city-name {
-	position: absolute;
-	width: 100%;
-}
 
 .city-name p {
-	font-weight: 400;
-	font-size: 16pt;
-}
-
-.city-name span {
-	position: relative;
-	top: -50px;
-	font-size: 40pt;
-	font-family: "Times New Roman", Times, serif;
+	font-size: 50px;
+	text-align: center;
 }
 
 .temp span {
@@ -60,6 +45,7 @@ html {
 	white-space: nowrap;
 }
 .card-mid {
+	font-size: 20px;
 	line-height: 0.5;
 }
 .condition {
@@ -97,16 +83,16 @@ html {
 
 .img-card {
 	position: absolute;
-	width: 100%;
-	height: 100%;
+	width: 50px;
+	height: 50px;
 }
 
 .card-box-like {
 	position: absolute;
 	background-color: rgb(38, 38, 38);
 	left: 60%;
-	top: 60%;
-	padding: 4rem;
+	top: 90%;
+	padding: 2rem;
 	border-radius: 9px;
 	width: 500px;
 }
@@ -114,13 +100,13 @@ html {
 	position: absolute;
 	background-color: rgb(38, 38, 38);
 	left: 460%;
-	top: 60%;
-	padding: 4rem;
+	top: 90%;
+	padding: 2rem;
 	border-radius: 9px;
 	width: 500px;
 }
 .page {
-	background-color: rgb(202, 52, 52);
+	background-color: rgb(56, 51, 51);
 	width: 100%;
 	height: 100%;
 }
@@ -129,4 +115,99 @@ html {
 	position: relative;
 	left: 100%;
 	top: -500px;
+	width: 100%;
+	font-size: 20px;
+	color: #707070;
+	
+	
+}
+
+.card-top{
+	position: absolute;
+	left: 50%;
+	top: 90%;
+	transform: translate(-50%,-50%);
+	
+}
+
+.img-icons-local{
+	position: absolute;
+	left: -10%;
+	top: 20%;
+	transform: translate(-50%,-50%);
+	width: 40px;	
+	
+}
+
+.icon-weather{
+	position: absolute;
+	left: 50%;
+	top: 60%;
+	transform: translate(-50%,-50%);
+}
+
+.card-box-temp{
+	position: absolute;
+	background-color: rgb(38, 38, 38);
+	left: 60%;
+	top: 120%;
+	padding: 2rem;
+	border-radius: 9px;
+	width: 500px;
+	text-align: center;
+	height: 270px;
+}
+
+.card-box-pressure{
+	position: absolute;
+	background-color: rgb(38, 38, 38);
+	left: 460%;
+	top: 120%;
+	padding: 2rem;
+	border-radius: 9px;
+	width: 500px;
+	height: 270px;
+	text-align: center;
+}
+
+.box-title{
+	font-size: 60px;
+	color: #fff;
+}
+
+.icon-temp{
+	width: 15px;
+}
+
+.main-title{
+	position: absolute;
+	left: 100px;
+	top: 80%;
+	font-size: 100px;
+	color: #fff;
+	font-size: 40px;
+	width: 400px;
+}
+
+.cards{
+	position: absolute;
+	left: 100px;
+	top: 55%;
+	display: flex;
+	width: 1200px;
+	
+
+}
+
+.box-card{
+	margin: 20px;
+	color: #fff;
+	background-color: rgb(38, 38, 38);
+	border-radius: 9px;
+	height: 200px;
+}
+
+.card-body{
+	background-color: rgb(38, 38, 38);
+	border-radius: 9px;
 }

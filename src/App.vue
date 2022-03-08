@@ -1,4 +1,5 @@
 <template>
+
 	<div class="page">
 		<div id="main" :class="isDay ? 'day' : 'night'">
 			<h1 class="title text-center m-4">Weather app</h1>
@@ -13,7 +14,7 @@
 			</form>
 			<p class="text-center my-3" v-if="cityFound">No city found</p>
 
-			<div>
+			<div class="icon-weather">
 				<div icon="sunny" v-if="clearSky" data-label="Sunny">
 					<img src="../src/assets/img/sun.png" alt="" class="img-icons" />
 				</div>
@@ -35,54 +36,79 @@
 				</div>
 			</div>
 
-			<div class="card-top text-center" style="margin-bottom: 15rem">
-				<div class="city-name my-3">
-					<img src="../src/assets/img/place.png" alt="" class="img-icons" />
-					<p>{{ weather.cityName }}</p>
-					<p class="">{{ weather.country }}</p>
-				</div>
-			</div>
-
-			<div class="card-body">
-				<div class="card-mid">
-					<div class="row">
-						<div class="col-12 text-center temp">
-							<span>{{ weather.temperature }}&deg;C</span>
-							<p class="my-4">{{ weather.description }}</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col d-flex justify-content-between px-5 mx-5">
-							<p>
-								<img src="./assets/down.svg" alt="" />
-								{{ weather.lowTemp }}&deg;C
-							</p>
-							<p>
-								<img src="./assets/up.svg" alt="" />
-								{{ weather.highTemp }}&deg;C
-							</p>
-						</div>
+			<div class="card-mid">
+				<div class="row">
+					<div class="col-12 text-center temp">
+						<span>{{ weather.temperature }}&deg;C</span>
+						<p class="my-4">{{ weather.description }}</p>
 					</div>
 				</div>
 			</div>
 
-			<div id="main" class="card-box">
+			<div class="card-top">
+				<div class="city-name">
+					<img src="../src/assets/img/place.png" alt="" class="img-icons-local" />
+					<p>{{ weather.cityName }} </p> 
+					<p class=""> {{ weather.country }}</p>
+				</div>
+			</div>
+			
+
+			<div id="main" class="card-box" >	
+				
+
+					<div class="cards" id="iconsContainer" >
+						<div class="box-card icons" style="width: 18rem;" v-for="item in cos.daily" :key="item.id">
+							<p class="weather" id="day1"></p>
+							<img src="" class="card-img-top" alt="">
+							<div class="card-body">
+								<p class="temp-day" id="temp-day">{{ item }} &deg;C</p>
+							</div>
+						</div>
+					</div>
+
+			
+
+				<div class="main-title"><p>Today highlights</p></div>
+
 				<div class="card-box-like">
 					<div class="col text-center">
-						<p>{{ weather.feelsLike }}&deg;C</p>
+						<p class="box-title">{{ weather.feelsLike }}&deg;C</p>
 						<span>Feels like</span>
 					</div>
 				</div>
 
 				<div class="card-box-humidity">
 					<div class="col text-center">
-						<p>{{ weather.humidity }}%</p>
-						<span>humidity</span>
+						<p class="box-title">{{ weather.humidity }}%</p>
+						<span>Humidity</span>
+					</div>
+				</div>
+					
+				<div class="card-box-temp">
+							<p class="box-title">Min
+								<img src="./assets/down.svg" alt="" class="icon-temp"/>
+								{{ weather.lowTemp }}&deg;C
+							</p>
+							<p class="box-title">Max
+								<img src="./assets/up.svg" alt="" class="icon-temp"/>
+								{{ weather.highTemp }}&deg;C
+							</p>
+				</div>
+
+				<div class="card-box-pressure">
+					<div class="col text-center">
+						<p class="box-title">{{ weather.pressure }}hPa</p>
+						<span>Pressure</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	
+
+	
 </template>
 
 <script>
@@ -100,15 +126,27 @@ export default {
 			isDay: true,
 			citySearch: "",
 			weather: {
-				cityName: "Gwarinpa",
-				country: "NG",
-				temperature: 12,
-				description: "Clouds everywhere",
-				lowTemp: "19",
-				highTemp: "30",
-				feelsLike: "20",
-				humidity: "55",
+				cityName: "City",
+				country: "Country",
+				temperature: '--',
+				description: "",
+				lowTemp: "",
+				highTemp: "",
+				feelsLike: "",
+				humidity: "",
+				pressure: "",
 			},
+
+			lon: 0,
+			lat: 0,
+			cos: "",
+
+			daily:{
+				day:"",
+				min:"",
+				max:"",
+			}
+			
 		};
 	},
 	methods: {
@@ -131,6 +169,12 @@ export default {
 				this.weather.highTemp = Math.round(data.main.temp_max);
 				this.weather.feelsLike = Math.round(data.main.feels_like);
 				this.weather.humidity = Math.round(data.main.humidity);
+				this.weather.pressure = Math.round(data.main.pressure);
+
+				this.lon = data.coord.lon;
+				this.lat = data.coord.lat;
+				
+				this.getWeatherCord();
 
 				const timeOfDay = data.weather[0].icon;
 
@@ -188,6 +232,96 @@ export default {
 					this.clearNight = false;
 					this.snowy = true;
 				}
+
+				this.visible = true;
+				this.cityFound = false;
+			} catch (error) {
+				console.log(error);
+				this.cityFound = true;
+				this.visible = false;
+			}
+		},
+
+
+		
+		async getWeatherCord() {
+			console.log(this.citySearch);
+			const key = "40ad7bff961e06f4ff202636ea1fd452";
+			const baseURL2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&appid=${key}`
+			
+			try {
+				const res = await fetch(baseURL2);
+				const fulldata = await res.json();
+				console.log(fulldata);
+
+
+				this.day = fulldata.day;
+
+				this.cos = fulldata;
+				
+				
+				
+				// this.citySearch = "";
+				// this.weather.cityName = data.name;
+				// this.weather.temperature = Math.round(data.main.temp);
+				
+
+
+
+				// const timeOfDay = data.weather[0].icon;
+
+				// if (timeOfDay.includes("n")) {
+				// 	this.isDay = false;
+				// } else {
+				// 	this.isDay = true;
+				// }
+
+				// const mainWeather = data.weather[0].main;
+				// if (mainWeather.includes("Clouds")) {
+				// 	this.stormy = false;
+				// 	this.cloudy = true;
+				// 	this.clearSky = false;
+				// 	this.clearNight = false;
+				// 	this.snowy = false;
+				// }
+				// if (mainWeather.includes("Clouds")) {
+				// 	this.stormy = false;
+				// 	this.cloudy = true;
+				// 	this.clearSky = false;
+				// 	this.clearNight = false;
+				// 	this.snowy = false;
+				// }
+				// if (
+				// 	mainWeather.includes("Thunderstorm") ||
+				// 	mainWeather.includes("Rain")
+				// ) {
+				// 	this.stormy = true;
+				// 	this.cloudy = false;
+				// 	this.clearSky = false;
+				// 	this.clearNight = false;
+				// 	this.snowy = false;
+				// }
+				// if (mainWeather.includes("Clear") && this.isDay) {
+				// 	this.stormy = false;
+				// 	this.cloudy = false;
+				// 	this.clearSky = true;
+				// 	this.clearNight = false;
+				// 	this.snowy = false;
+				// }
+				// if (mainWeather.includes("Clouds") && !this.isDay) {
+				// 	this.stormy = false;
+				// 	this.cloudy = false;
+				// 	this.clearSky = false;
+				// 	this.clearNight = true;
+				// 	this.snowy = false;
+				// }
+				// if (mainWeather.includes("Snow")) {
+				// 	this.stormy = false;
+				// 	this.cloudy = false;
+				// 	this.clearSky = false;
+				// 	this.clearNight = false;
+				// 	this.snowy = true;
+				// }
 
 				this.visible = true;
 				this.cityFound = false;
