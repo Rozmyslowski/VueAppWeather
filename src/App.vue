@@ -64,10 +64,8 @@
 						v-for="item in dataapp.daily"
 						:key="item.id"
 					>
-						<p class="weather" id="day1"></p>
-						<img src="" class="card-img-top" alt="" />
 						<div class="card-body">
-							<p class="temp-day" id="temp-day">{{ daily.clouds }} &deg;C</p>
+							<p class="temp-day" id="temp-day">{{ new Date(item.dt*1000).toLocaleDateString("pl-PL") }} <br> {{	Math.round(item.temp.min)}} &deg;C</p>
 						</div>
 					</div>
 				</div>
@@ -144,15 +142,6 @@ export default {
 			dataapp: {
 				day: "",
 			},
-
-			daily: {
-				clouds: "",
-				day: "",
-				min: "",
-				max: "",
-				pressure: "",
-				id: "",
-			},
 		};
 	},
 	methods: {
@@ -161,7 +150,6 @@ export default {
 			const key = "40ad7bff961e06f4ff202636ea1fd452";
 			const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&appid=${key}&units=metric`;
 
-			//fetch weather
 			try {
 				const response = await fetch(baseURL);
 				const data = await response.json();
@@ -184,7 +172,6 @@ export default {
 
 				const timeOfDay = data.weather[0].icon;
 
-				///check for time of day
 				if (timeOfDay.includes("n")) {
 					this.isDay = false;
 				} else {
@@ -192,7 +179,7 @@ export default {
 				}
 
 				const mainWeather = data.weather[0].main;
-				//check weather animations
+				
 				if (mainWeather.includes("Clouds")) {
 					this.stormy = false;
 					this.cloudy = true;
@@ -251,83 +238,14 @@ export default {
 		async getWeatherCord() {
 			console.log(this.citySearch);
 			const key = "40ad7bff961e06f4ff202636ea1fd452";
-			const baseURL2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&appid=${key}`;
-
-			// const days = ["Mon", "Tue", "Wend", "Thu", "Fri", "Sat", "Sun"];
+			const baseURL2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&appid=${key}&units=metric`;
 
 			try {
 				const res = await fetch(baseURL2);
 				const fulldata = await res.json();
-				
-				
-
-
 				console.log(fulldata);
 
 				this.dataapp = fulldata;
-
-				this.day = fulldata.day;
-
-				this.daily.clouds = fulldata.daily[0].temp.day;
-
-				// this.citySearch = "";
-				// this.weather.cityName = data.name;
-				// this.weather.temperature = Math.round(data.main.temp);
-
-				// const timeOfDay = data.weather[0].icon;
-
-				// if (timeOfDay.includes("n")) {
-				// 	this.isDay = false;
-				// } else {
-				// 	this.isDay = true;
-				// }
-
-				// const mainWeather = data.weather[0].main;
-				// if (mainWeather.includes("Clouds")) {
-				// 	this.stormy = false;
-				// 	this.cloudy = true;
-				// 	this.clearSky = false;
-				// 	this.clearNight = false;
-				// 	this.snowy = false;
-				// }
-				// if (mainWeather.includes("Clouds")) {
-				// 	this.stormy = false;
-				// 	this.cloudy = true;
-				// 	this.clearSky = false;
-				// 	this.clearNight = false;
-				// 	this.snowy = false;
-				// }
-				// if (
-				// 	mainWeather.includes("Thunderstorm") ||
-				// 	mainWeather.includes("Rain")
-				// ) {
-				// 	this.stormy = true;
-				// 	this.cloudy = false;
-				// 	this.clearSky = false;
-				// 	this.clearNight = false;
-				// 	this.snowy = false;
-				// }
-				// if (mainWeather.includes("Clear") && this.isDay) {
-				// 	this.stormy = false;
-				// 	this.cloudy = false;
-				// 	this.clearSky = true;
-				// 	this.clearNight = false;
-				// 	this.snowy = false;
-				// }
-				// if (mainWeather.includes("Clouds") && !this.isDay) {
-				// 	this.stormy = false;
-				// 	this.cloudy = false;
-				// 	this.clearSky = false;
-				// 	this.clearNight = true;
-				// 	this.snowy = false;
-				// }
-				// if (mainWeather.includes("Snow")) {
-				// 	this.stormy = false;
-				// 	this.cloudy = false;
-				// 	this.clearSky = false;
-				// 	this.clearNight = false;
-				// 	this.snowy = true;
-				// }
 
 				this.visible = true;
 				this.cityFound = false;
