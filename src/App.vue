@@ -34,7 +34,7 @@
 					<img src="../src/assets/img/night.png" alt="" class="img-icons" />
 				</div>
 			</div>
-
+		
 			<div class="card-mid">
 				<div class="row">
 					<div class="col-12 text-center temp">
@@ -65,7 +65,8 @@
 						:key="item.id"
 					>
 						<div class="card-body">
-							<p class="temp-day" id="temp-day">{{ new Date(item.dt*1000).toLocaleDateString("pl-PL") }} <br> {{	Math.round(item.temp.min)}} &deg;C</p>
+							<p class="temp-day temp-title" id="temp-day">{{ new Date(item.dt*1000).toLocaleDateString("pl-PL") }}</p>
+							<p class="temp-day" id="temp-day">{{	Math.round(item.temp.day)}} &deg;C</p>
 						</div>
 					</div>
 				</div>
@@ -128,12 +129,12 @@ export default {
 				cityName: "City",
 				country: "Country",
 				temperature: "--",
-				description: "",
-				lowTemp: "",
-				highTemp: "",
-				feelsLike: "",
-				humidity: "",
-				pressure: "",
+				description: "-",
+				lowTemp: "-",
+				highTemp: "-",
+				feelsLike: "-",
+				humidity: "-",
+				pressure: "-",
 			},
 
 			lon: 0,
