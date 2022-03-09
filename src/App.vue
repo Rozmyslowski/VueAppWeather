@@ -1,5 +1,4 @@
 <template>
-
 	<div class="page">
 		<div id="main" :class="isDay ? 'day' : 'night'">
 			<h1 class="title text-center m-4">Weather app</h1>
@@ -47,27 +46,31 @@
 
 			<div class="card-top">
 				<div class="city-name">
-					<img src="../src/assets/img/place.png" alt="" class="img-icons-local" />
-					<p>{{ weather.cityName }} </p> 
-					<p class=""> {{ weather.country }}</p>
+					<img
+						src="../src/assets/img/place.png"
+						alt=""
+						class="img-icons-local"
+					/>
+					<p>{{ weather.cityName }}</p>
+					<p class="">{{ weather.country }}</p>
 				</div>
 			</div>
-			
 
-			<div id="main" class="card-box" >	
-				
-
-					<div class="cards" id="iconsContainer" >
-						<div class="box-card icons" style="width: 18rem;" v-for="item in cos.daily" :key="item.id">
-							<p class="weather" id="day1"></p>
-							<img src="" class="card-img-top" alt="">
-							<div class="card-body">
-								<p class="temp-day" id="temp-day">{{ item }} &deg;C</p>
-							</div>
+			<div id="main" class="card-box">
+				<div class="cards" id="iconsContainer">
+					<div
+						class="box-card icons"
+						style="width: 18rem"
+						v-for="item in dataapp.daily"
+						:key="item.id"
+					>
+						<p class="weather" id="day1"></p>
+						<img src="" class="card-img-top" alt="" />
+						<div class="card-body">
+							<p class="temp-day" id="temp-day">{{ daily.clouds }} &deg;C</p>
 						</div>
 					</div>
-
-			
+				</div>
 
 				<div class="main-title"><p>Today highlights</p></div>
 
@@ -84,16 +87,18 @@
 						<span>Humidity</span>
 					</div>
 				</div>
-					
+
 				<div class="card-box-temp">
-							<p class="box-title">Min
-								<img src="./assets/down.svg" alt="" class="icon-temp"/>
-								{{ weather.lowTemp }}&deg;C
-							</p>
-							<p class="box-title">Max
-								<img src="./assets/up.svg" alt="" class="icon-temp"/>
-								{{ weather.highTemp }}&deg;C
-							</p>
+					<p class="box-title">
+						Min
+						<img src="./assets/down.svg" alt="" class="icon-temp" />
+						{{ weather.lowTemp }}&deg;C
+					</p>
+					<p class="box-title">
+						Max
+						<img src="./assets/up.svg" alt="" class="icon-temp" />
+						{{ weather.highTemp }}&deg;C
+					</p>
 				</div>
 
 				<div class="card-box-pressure">
@@ -105,10 +110,6 @@
 			</div>
 		</div>
 	</div>
-
-	
-
-	
 </template>
 
 <script>
@@ -128,7 +129,7 @@ export default {
 			weather: {
 				cityName: "City",
 				country: "Country",
-				temperature: '--',
+				temperature: "--",
 				description: "",
 				lowTemp: "",
 				highTemp: "",
@@ -139,18 +140,23 @@ export default {
 
 			lon: 0,
 			lat: 0,
-			cos: "",
 
-			daily:{
-				day:"",
-				min:"",
-				max:"",
-			}
-			
+			dataapp: {
+				day: "",
+			},
+
+			daily: {
+				clouds: "",
+				day: "",
+				min: "",
+				max: "",
+				pressure: "",
+				id: "",
+			},
 		};
 	},
 	methods: {
-		getWeather: async function() {
+		getWeather: async function () {
 			console.log(this.citySearch);
 			const key = "40ad7bff961e06f4ff202636ea1fd452";
 			const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&appid=${key}&units=metric`;
@@ -173,7 +179,7 @@ export default {
 
 				this.lon = data.coord.lon;
 				this.lat = data.coord.lat;
-				
+
 				this.getWeatherCord();
 
 				const timeOfDay = data.weather[0].icon;
@@ -242,31 +248,31 @@ export default {
 			}
 		},
 
-
-		
 		async getWeatherCord() {
 			console.log(this.citySearch);
 			const key = "40ad7bff961e06f4ff202636ea1fd452";
-			const baseURL2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&appid=${key}`
-			
+			const baseURL2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${this.lat}&lon=${this.lon}&appid=${key}`;
+
+			// const days = ["Mon", "Tue", "Wend", "Thu", "Fri", "Sat", "Sun"];
+
 			try {
 				const res = await fetch(baseURL2);
 				const fulldata = await res.json();
+				
+				
+
+
 				console.log(fulldata);
 
+				this.dataapp = fulldata;
 
 				this.day = fulldata.day;
 
-				this.cos = fulldata;
-				
-				
-				
+				this.daily.clouds = fulldata.daily[0].temp.day;
+
 				// this.citySearch = "";
 				// this.weather.cityName = data.name;
 				// this.weather.temperature = Math.round(data.main.temp);
-				
-
-
 
 				// const timeOfDay = data.weather[0].icon;
 
