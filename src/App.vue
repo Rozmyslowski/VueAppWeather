@@ -55,6 +55,7 @@
 					<p class="">{{ weather.country }}</p>
 				</div>
 			</div>
+			
 
 			<div id="main" class="card-box">
 				<div class="cards" id="iconsContainer">
